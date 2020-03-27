@@ -1,0 +1,9 @@
+server:
+  port: 7090
+spring:
+  application:
+    name: mayikt-member
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+

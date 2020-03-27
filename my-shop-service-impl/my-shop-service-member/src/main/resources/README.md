@@ -1,0 +1,1 @@
+http://127.0.0.1:7090/member2AppInfo?userId=1
