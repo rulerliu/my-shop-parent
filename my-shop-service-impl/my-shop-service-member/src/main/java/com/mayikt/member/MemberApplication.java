@@ -1,5 +1,6 @@
-package com.mayikt;
+package com.mayikt.member;
 
+import com.spring4all.swagger.EnableSwagger2Doc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -11,6 +12,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @version: V1.0
  */
 @EnableFeignClients
+@EnableSwagger2Doc
 @SpringBootApplication
 public class MemberApplication {
 
@@ -19,3 +21,4 @@ public class MemberApplication {
     }
 
 }
+
