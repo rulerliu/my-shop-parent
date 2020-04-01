@@ -5,6 +5,7 @@ import com.mayikt.base.BaseResponse;
 import com.mayikt.weixin.service.api.WeiXinService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -14,14 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
  * @version: V1.0
  */
 @RestController
+@RefreshScope
 public class WeiXinServiceImpl extends BaseApiService implements WeiXinService {
 
     @Value("${server.port}")
     private String port;
 
+    @Value("${mayikt.name}")
+    private String mayiktName;
+
     @Override
     public String appInfo(Long appId) {
-        return "微信接口" + appId + ">>>" + port;
+        return "微信接口:" + appId + ">>>" + port + ",mayiktName:" + mayiktName;
     }
 
     @Override
