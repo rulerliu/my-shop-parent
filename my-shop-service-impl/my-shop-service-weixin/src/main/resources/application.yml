@@ -10,6 +10,32 @@
 #    url: www.mayikt.com
 #  enabled: true
 
-# 使用nacos的配置，不会使用本地配置
+### 使用nacos的配置，不会使用本地配置
+
+#logging:
+#  level:
+#    org.springframework.web: INFO
+#    com.github.binarywang.demo.wx.mp: DEBUG
+#    me.chanjar.weixin: DEBUG
+#
+#spring:
+#  ###数据库相关连接
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://47.106.190.68:3306/mayikt_wechat?useUnicode=true&characterEncoding=UTF-8
+#    username: root
+#    password: 729754701
+#
+#wx:
+#  mp:
+#    configs:
+#      - appId: wx1cfc856828f3c25b
+#        secret: 15ec9979e10838dff8ee336522f62ee0
+#        token: mayikt
+#        #aesKey: 111 （接口配置里的EncodingAESKey值）
+#
 #mayikt:
 #  name: shajkfhjkahfkds
+#  wx:
+#    defaultMsg: 亲，请输入有效的城市名称！
+#    weatherUrl: https://api.seniverse.com/v3/weather/now.json?key=S2f6L62SpD0ivVO6j&location=#location&language=zh-Hans&unit=c

@@ -13,6 +13,7 @@
         <module>my-shop-service-impl</module>
         <module>my-shop-service-base</module>
         <module>my-shop-basics</module>
+        <module>my-shop-common</module>
     </modules>
 
 
