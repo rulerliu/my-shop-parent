@@ -6,6 +6,7 @@ import com.mayikt.member.dto.UserLoginDTO;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 /**
  * @description:
@@ -26,6 +27,7 @@ public interface MemberLoginService {
             @ApiImplicitParam(name = "userLoginDTO", value = "用户的登录信息", required = true)
     })
     @ApiResponse(code = 200, message = "响应成功")
-    BaseResponse<JSONObject> login(@RequestBody UserLoginDTO userLoginDTO);
+    BaseResponse<JSONObject> login(@RequestBody UserLoginDTO userLoginDto, @RequestHeader("X-Real-IP")
+            String sourceIp, @RequestHeader("channel") String channel, @RequestHeader("deviceInfor") String deviceInfor);
 
 }

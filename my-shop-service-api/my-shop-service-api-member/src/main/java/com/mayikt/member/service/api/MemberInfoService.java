@@ -3,7 +3,7 @@ package com.mayikt.member.service.api;
 import com.alibaba.fastjson.JSONObject;
 import com.mayikt.base.BaseResponse;
 import io.swagger.annotations.*;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -19,7 +19,7 @@ public interface MemberInfoService {
      * 根据token查询会员信息
      * @return
      */
-    @PostMapping("/getTokenUser")
+    @GetMapping("/getTokenUser")
     @ApiOperation("会员信息查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "登录token", required = true)
