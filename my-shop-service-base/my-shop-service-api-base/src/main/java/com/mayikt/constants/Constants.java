@@ -10,4 +10,5 @@ public interface Constants {
     // 系统错误
     Integer HTTP_RES_CODE_500 = 500;
 
+    String MEMBER_LOGIN_PREFIX = "MEMBER_LOGIN";
 }
