@@ -55,4 +55,38 @@ public class MemberInfoServiceImpl extends BaseApiService implements MemberInfoS
         userRespDTO.setMobile(DesensitizationUtil.mobileEncrypt(userDo.getMobile()));
         return setResultSuccess(userRespDTO);
     }
+
+    @Override
+    public BaseResponse<Object> updateUseOpenId(Long userId, String openId) {
+        int reuslt = userMapper.updateUseOpenId(userId, openId);
+        return setResultDb(reuslt, "关联成功", "关联失败");
+    }
+
+    @Override
+    public BaseResponse<UserRespDTO> selectByOpenId(String openId) {
+        UserDo userDo = userMapper.selectByOpenId(openId);
+        if (userDo == null) {
+            return setResultError("根据openId查询该用户没有关注过");
+        }
+        // 需要将do转换成dto
+        UserRespDTO userRespDto = doToDto(userDo, UserRespDTO.class);
+        String mobile = userRespDto.getMobile();
+        userRespDto.setMobile(DesensitizationUtil.mobileEncrypt(mobile));
+        return setResultSuccess(userRespDto);
+    }
+
+    @Override
+    public BaseResponse<Object> cancelFollowOpenId(String openId) {
+        if (StringUtils.isEmpty(openId)) {
+            return setResultError("openId不能为空");
+        }
+        UserDo userDo = userMapper.selectByOpenId(openId);
+        if (userDo == null) {
+            return setResultError("根据openId查询该用户没有关注过");
+        }
+        // 已经关注过，则将对应的用户的openid 变为空
+        int result = userMapper.cancelFollowOpenId(openId);
+        return setResultDb(result, "取消关注成功", "取消关注成功失败!");
+    }
+
 }

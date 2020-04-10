@@ -1,8 +1,10 @@
 package com.mayikt.member.manage;
 
 import com.mayikt.member.entity.UserLoginLogDo;
+import com.mayikt.member.feign.WeChatLoginTemplateServiceFeign;
 import com.mayikt.member.mapper.UserLoginLogMapper;
 import com.mayikt.utils.TokenUtils;
+import com.mayikt.weixin.dto.LoginTemplateDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -24,9 +26,11 @@ public class AsyncLoginLogManage {
     private UserLoginLogMapper userLoginLogMapper;
     @Autowired
     private TokenUtils tokenUtils;
+    @Autowired
+    private WeChatLoginTemplateServiceFeign weChatLoginTemplateServiceFeign;
 
     @Async
-    public void loginLog(Long userId, String loginIp, Date loginTime, String loginToken, String channel,
+    public void loginLog(String phone, String openId, Long userId, String loginIp, Date loginTime, String loginToken, String channel,
                          String equipment) {
 
         // 根据userid和channel查询登录log表
@@ -46,6 +50,10 @@ public class AsyncLoginLogManage {
         // 插入当前记录日志
         UserLoginLogDo userLoginLogDo = new UserLoginLogDo(userId, loginIp, loginTime, loginToken, channel, equipment);
         userLoginLogMapper.insertUserLoginLog(userLoginLogDo);
+
+        // 微信登录消息推送
+        LoginTemplateDTO loginTemplateDTO = new LoginTemplateDTO(phone, loginTime, loginIp, equipment, openId);
+        weChatLoginTemplateServiceFeign.sendLoginTemplate(loginTemplateDTO);
 
         System.out.println(">>>>>线程名称:" + Thread.currentThread().getName() + ",userLoginLogDo:" + userLoginLogDo.toString() +
                 ",流程2");

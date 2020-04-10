@@ -51,6 +51,6 @@ public class MemberRegisterServiceImpl extends BaseApiService implements MemberR
         // 插入数据库
         int result = userMapper.register(userDo);
 
-        return setResult(result, "注册成功", "注册失败");
+        return setResultDb(result, "注册成功", "注册失败");
     }
 }

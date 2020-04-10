@@ -1,5 +1,6 @@
 package com.mayikt.weixin.mp.handler;
 
+import com.mayikt.weixin.manage.WxMpServiceManage;
 import com.mayikt.weixin.mp.builder.TextBuilder;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
@@ -7,6 +8,8 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -17,17 +20,21 @@ import java.util.Map;
 @Component
 public class SubscribeHandler extends AbstractHandler {
 
+    @Autowired
+    private WxMpServiceManage wxMpServiceManage;
+
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
                                     Map<String, Object> context, WxMpService weixinService,
                                     WxSessionManager sessionManager) throws WxErrorException {
-
-        this.logger.info("新关注用户 OPENID: " + wxMessage.getFromUser());
+        String openId = wxMessage.getFromUser();
+        this.logger.info("新关注用户 OPENID: " + openId);
 
         // 获取微信用户基本信息
+        WxMpUser userWxInfo = null;
         try {
-            WxMpUser userWxInfo = weixinService.getUserService()
-                .userInfo(wxMessage.getFromUser(), null);
+            userWxInfo = weixinService.getUserService()
+                .userInfo(openId, null);
             if (userWxInfo != null) {
                 // TODO 可以添加关注用户到本地数据库
             }
@@ -36,7 +43,6 @@ public class SubscribeHandler extends AbstractHandler {
                 this.logger.info("该公众号没有获取用户信息权限！");
             }
         }
-
 
         WxMpXmlOutMessage responseResult = null;
         try {
@@ -49,8 +55,16 @@ public class SubscribeHandler extends AbstractHandler {
             return responseResult;
         }
 
+        String eventKey = wxMessage.getEventKey(); // qrscene_3
+        if (StringUtils.isEmpty(eventKey)) {
+            this.logger.info("eventKey为空！");
+            return new TextBuilder().build("感谢关注" + userWxInfo.getNickname(), wxMessage, weixinService);
+        }
+        Long userId = Long.parseLong(eventKey.replace("qrscene_", ""));
+        wxMpServiceManage.handler(userId, openId);
+
         try {
-            return new TextBuilder().build("感谢关注", wxMessage, weixinService);
+            return new TextBuilder().build("感谢关注" + userWxInfo.getNickname(), wxMessage, weixinService);
         } catch (Exception e) {
             this.logger.error(e.getMessage(), e);
         }

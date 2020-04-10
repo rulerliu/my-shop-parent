@@ -2,8 +2,10 @@ package com.mayikt.member.service.api;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mayikt.base.BaseResponse;
+import com.mayikt.member.dto.UserRespDTO;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -26,5 +28,38 @@ public interface MemberInfoService {
     })
     @ApiResponse(code = 200, message = "响应成功")
     BaseResponse<JSONObject> getTokenUser(@RequestParam("token") String token);
+
+    /**
+     * 关联用户的openid
+     *
+     * @param userId
+     * @param openId
+     * @return
+     */
+    @PostMapping("/updateUseOpenId")
+    @ApiOperation("关联用户的openid")
+    BaseResponse<Object> updateUseOpenId(@RequestParam("userId") Long userId,
+                                         @RequestParam(name = "openId", required = false) String openId);
+
+    /**
+     * 根据openid  查询用户信息
+     *
+     * @param openId
+     * @return
+     */
+    @GetMapping("/selectByOpenId")
+    @ApiOperation("根据openid 查询用户信息")
+    BaseResponse<UserRespDTO> selectByOpenId(
+            @RequestParam("openId") String openId);
+
+
+    /**
+     * 取消关注
+     *
+     * @param openId
+     * @return
+     */
+    @GetMapping("/cancelFollowOpenId")
+    BaseResponse<Object> cancelFollowOpenId(@RequestParam("openId") String openId);
 
 }

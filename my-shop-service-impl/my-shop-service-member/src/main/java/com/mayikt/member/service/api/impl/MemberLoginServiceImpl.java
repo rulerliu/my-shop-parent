@@ -80,7 +80,8 @@ public class MemberLoginServiceImpl extends BaseApiService implements MemberLogi
         // 异步写入登录日志
         System.out.println(">>>>>线程名称:" + Thread.currentThread().getName() + ",流程1");
 //        for (int i = 0; i < 12; i++) {
-        asyncLoginLogManage.loginLog(userDo.getUserId(), sourceIp, new Date(), token, channel, deviceInfor);
+        asyncLoginLogManage.loginLog(userDo.getMobile(), userDo.getWxOpenId(), userDo.getUserId(),
+                sourceIp, new Date(), token, channel, deviceInfor);
 //        }
         System.out.println(">>>>>线程名称:" + Thread.currentThread().getName() + ",流程3");
 

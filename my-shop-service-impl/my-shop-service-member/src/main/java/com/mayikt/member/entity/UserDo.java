@@ -67,9 +67,9 @@ public class UserDo {
     * 用户关联 QQ 开放ID
     */
 
-   private Date qqOpenid;
+   private String qqOpenid;
    /**
     * 用户关联 微信 开放ID
     */
-   private Date wxOpenId;
+   private String wxOpenId;
 }

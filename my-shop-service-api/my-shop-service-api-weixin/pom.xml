@@ -11,7 +11,6 @@
 
     <artifactId>my-shop-service-api-weixin</artifactId>
 
-
     <!--注意限定版本一定为RELEASE,因为上传的对应仓库的存储类型为RELEASE -->
     <!--指定仓库地址 -->
     <distributionManagement>

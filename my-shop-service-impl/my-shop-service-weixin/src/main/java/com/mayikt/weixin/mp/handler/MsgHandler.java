@@ -44,6 +44,10 @@ public class MsgHandler extends AbstractHandler {
             //TODO 可以选择将消息保存到本地
         }
         String content = wxMessage.getContent();
+        if (StringUtils.isEmpty(content)) {
+            return new TextBuilder().build(defaultMsg, wxMessage, weixinService);
+        }
+
         // 1 查询数据库
         WechatKeyword keyword = keywordMapper.findByKeyword(content);
         if (keyword != null) {

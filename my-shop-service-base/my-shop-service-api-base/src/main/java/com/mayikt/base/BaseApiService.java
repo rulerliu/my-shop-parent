@@ -70,7 +70,7 @@ public class BaseApiService<T> {
         return MeiteBeanUtils.doToDto(doEntity, dtoClass);
     }
 
-    public BaseResponse<T> setResult(int result, T successMsg, String errorMsg) {
+    public BaseResponse<T> setResultDb(int result, T successMsg, String errorMsg) {
         return result > 0 ? setResultSuccess(successMsg) : setResultError(errorMsg);
     }
 
