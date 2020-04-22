@@ -26,7 +26,7 @@ public interface UserLoginLogMapper {
             "login_time AS logintime,login_token AS logintoken\n" +
             ",channel AS channel,equipment AS equipment\n" +
             ",is_availability AS is_availability\n" +
-            "FROM user_login_log WHERE channel =#{channel} and user_id=#{userId}\n   and is_availability=1;")
+            "FROM user_login_log WHERE channel = #{channel} and user_id = #{userId}\n   and is_availability = 1;")
     UserLoginLogDo selectByUserIdAndLoginType(@Param("userId") Long userId, @Param("channel") String channel);
 
     @Update("update user_login_log set is_availability=0 where login_token=#{loginToken};")

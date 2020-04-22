@@ -1,3 +1,6 @@
+SELECT @@sql_mode;
+SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+
 DROP TABLE IF EXISTS `wechat_keywords`;
 CREATE TABLE `wechat_keywords` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

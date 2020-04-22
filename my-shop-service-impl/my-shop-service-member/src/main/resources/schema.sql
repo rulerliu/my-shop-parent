@@ -1,3 +1,6 @@
+SELECT @@sql_mode;
+SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+
 CREATE TABLE `meite_user` (
   `USER_ID` int(12) NOT NULL AUTO_INCREMENT COMMENT 'user_id',
   `MOBILE` varchar(11) NOT NULL COMMENT '手机号',
@@ -15,7 +18,6 @@ CREATE TABLE `meite_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户会员表';
 
 
-
 CREATE TABLE `user_login_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
@@ -26,3 +28,24 @@ CREATE TABLE `user_login_log` (
   `equipment` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET="utf8";
+
+
+DROP TABLE IF EXISTS `meite_union_login`;
+CREATE TABLE `meite_union_login` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `union_name` varchar(255) DEFAULT NULL,
+  `union_public_id` varchar(255) DEFAULT NULL,
+  `union_bean_id` varchar(255) DEFAULT NULL,
+  `app_id` varchar(255) DEFAULT NULL,
+  `app_key` varchar(255) DEFAULT NULL,
+  `redirect_uri` varchar(255) DEFAULT NULL,
+  `request_address` varchar(255) DEFAULT NULL,
+  `is_availability` int(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of meite_union_login
+-- ----------------------------
+INSERT INTO `meite_union_login` VALUES ('1', '腾讯QQ联合登陆', 'mayikt_qq', 'QQUnionLoginStrategy', '101410454', 'de56b00427f5970650c4f8ee3cfcfc2d', 'http://www.itmayiedu.com:7070/login/oauth/callback?unionPublicId=mayikt_qq', 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101410454&redirect_uri=http://www.itmayiedu.com:7070/login/oauth/callback?unionPublicId=mayikt_qq&state=1', '1');
+INSERT INTO `meite_union_login` VALUES ('2', '腾讯微信联合登陆', 'mayikt_weixin', null, '123456', '12133', null, null, '0');
