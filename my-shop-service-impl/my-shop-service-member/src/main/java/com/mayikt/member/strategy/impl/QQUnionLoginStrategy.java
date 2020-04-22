@@ -3,7 +3,9 @@ package com.mayikt.member.strategy.impl;
 import com.mayikt.http.HttpClientUtils;
 import com.mayikt.member.entity.UnionLoginDo;
 import com.mayikt.member.strategy.UnionLoginStrategy;
+import com.mayikt.utils.TokenUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +24,8 @@ public class QQUnionLoginStrategy implements UnionLoginStrategy {
     private String accesstokenAddress;
     @Value("${mayikt.login.qq.openid}")
     private String openidAddress;
+    @Autowired
+    private TokenUtils tokenUtils;
 
     @Override
     public String unionLoginCallback(HttpServletRequest request, UnionLoginDo unionLoginDo) {
@@ -50,14 +54,18 @@ public class QQUnionLoginStrategy implements UnionLoginStrategy {
         if (StringUtils.isEmpty(resultQQOpenId)) {
             return null;
         }
-        boolean openid = resultQQOpenId.contains("openid");
-        if (!openid) {
+        if (!resultQQOpenId.contains("openid")) {
             return null;
         }
         String array[] = resultQQOpenId.replace("callback( {", "")
                 .replace("} );", "")
+                .replace("\"", "")
+                .trim()
                 .split(":");
-        String openId = array[2].replace("\"", "").replace("\\n", "");
-        return openId;
+        String openid = array[2];
+
+        // 3.将openid存入到redis中
+        String openidToken = tokenUtils.createToken("qq.openid", openid);
+        return openidToken;
     }
 }

@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: mayikt-member
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     nacos:
       #  注册中心

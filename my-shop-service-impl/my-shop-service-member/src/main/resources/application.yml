@@ -9,3 +9,33 @@
 #    email: 644064779@qq.com
 #    url: www.mayikt.com
 #  enabled: true
+#
+#spring:
+#  ###数据库相关连接
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://47.106.190.68:3306/mayikt_member?useUnicode=true&characterEncoding=UTF-8
+#    username: root
+#    password: 729754701
+#
+#  redis:
+#    host: 127.0.0.1
+#    port: 6379
+#    password: 729754701
+#    pool:
+#      max-idle: 100
+#      min-idle: 1
+#      max-active: 1000
+#      max-wait: -1
+#  main:
+#    allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
+#
+#mayikt:
+#  login:
+#    token:
+#      channel: pc,android,ios
+#    qq:
+#      accesstoken: https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&client_id={client_id}&client_secret={client_secret}&code={code}&redirect_uri={redirect_uri}
+#      openid: https://graph.qq.com/oauth2.0/me?access_token=
+#    wx:
+#      accesstoken: https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code

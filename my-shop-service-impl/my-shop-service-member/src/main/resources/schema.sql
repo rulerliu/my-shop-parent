@@ -48,4 +48,4 @@ CREATE TABLE `meite_union_login` (
 -- Records of meite_union_login
 -- ----------------------------
 INSERT INTO `meite_union_login` VALUES ('1', '腾讯QQ联合登陆', 'mayikt_qq', 'QQUnionLoginStrategy', '101410454', 'de56b00427f5970650c4f8ee3cfcfc2d', 'http://www.itmayiedu.com:7070/login/oauth/callback?unionPublicId=mayikt_qq', 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101410454&redirect_uri=http://www.itmayiedu.com:7070/login/oauth/callback?unionPublicId=mayikt_qq&state=1', '1');
-INSERT INTO `meite_union_login` VALUES ('2', '腾讯微信联合登陆', 'mayikt_weixin', null, '123456', '12133', null, null, '0');
+INSERT INTO `meite_union_login` VALUES ('2', '腾讯微信联合登陆', 'mayikt_weixin', 'weiXinUnionLoginStrategy', 'wx1cfc856828f3c25b', '15ec9979e10838dff8ee336522f62ee0', 'http://www.itmayiedu.com:7070/login/oauth/callback?unionPublicId=mayikt_weixin', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1cfc856828f3c25b&redirect_uri=http://www.itmayiedu.com:7070/login/oauth/callback?unionPublicId=mayikt_weixin&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect', '1');

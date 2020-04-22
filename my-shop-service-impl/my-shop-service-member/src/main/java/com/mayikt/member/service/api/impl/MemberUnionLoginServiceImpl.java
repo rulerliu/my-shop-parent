@@ -67,13 +67,10 @@ public class MemberUnionLoginServiceImpl extends BaseApiService implements Membe
 
         UnionLoginStrategy unionLoginStrategy = SpringContextUtils.getBean(unionLoginDo.getUnionBeanId(), UnionLoginStrategy.class);
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        String openId = unionLoginStrategy.unionLoginCallback(request, unionLoginDo);
-        if (StringUtils.isEmpty(openId)) {
+        String openidToken = unionLoginStrategy.unionLoginCallback(request, unionLoginDo);
+        if (StringUtils.isEmpty(openidToken)) {
             return setResultError("系统错误");
         }
-
-        // 3.将openid存入到redis中
-        String openidToken = tokenUtils.createToken("qq.openid", openId);
 
         JSONObject data = new JSONObject();
         data.put("openidToken", openidToken);
