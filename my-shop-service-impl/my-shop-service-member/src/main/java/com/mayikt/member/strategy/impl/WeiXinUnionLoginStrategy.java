@@ -3,8 +3,9 @@ package com.mayikt.member.strategy.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.mayikt.http.HttpClientUtils;
 import com.mayikt.member.entity.UnionLoginDo;
+import com.mayikt.member.entity.UserDo;
+import com.mayikt.member.mapper.UserMapper;
 import com.mayikt.member.strategy.UnionLoginStrategy;
-import com.mayikt.utils.TokenUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +25,7 @@ public class WeiXinUnionLoginStrategy implements UnionLoginStrategy {
     @Value("${mayikt.login.wx.accesstoken}")
     private String accesstokenAddress;
     @Autowired
-    private TokenUtils tokenUtils;
+    UserMapper userMapper;
 
     @Override
     public String unionLoginCallback(HttpServletRequest request, UnionLoginDo unionLoginDo) {
@@ -50,8 +51,12 @@ public class WeiXinUnionLoginStrategy implements UnionLoginStrategy {
             return null;
         }
 
-        // 3.将openid存入到redis中
-        String openidToken = tokenUtils.createToken("wx.openid", openid);
-        return openidToken;
+        return openid;
     }
+
+    @Override
+    public UserDo getUserDo(String openid) {
+        return userMapper.selectByWxOpenId(openid);
+    }
+
 }

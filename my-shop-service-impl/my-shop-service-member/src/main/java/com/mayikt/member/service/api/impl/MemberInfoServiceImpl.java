@@ -58,13 +58,13 @@ public class MemberInfoServiceImpl extends BaseApiService implements MemberInfoS
 
     @Override
     public BaseResponse<Object> updateUseOpenId(Long userId, String openId) {
-        int reuslt = userMapper.updateUseOpenId(userId, openId);
+        int reuslt = userMapper.updateUserWxOpenId(userId, openId);
         return setResultDb(reuslt, "关联成功", "关联失败");
     }
 
     @Override
     public BaseResponse<UserRespDTO> selectByOpenId(String openId) {
-        UserDo userDo = userMapper.selectByOpenId(openId);
+        UserDo userDo = userMapper.selectByWxOpenId(openId);
         if (userDo == null) {
             return setResultError("根据openId查询该用户没有关注过");
         }
@@ -80,7 +80,7 @@ public class MemberInfoServiceImpl extends BaseApiService implements MemberInfoS
         if (StringUtils.isEmpty(openId)) {
             return setResultError("openId不能为空");
         }
-        UserDo userDo = userMapper.selectByOpenId(openId);
+        UserDo userDo = userMapper.selectByWxOpenId(openId);
         if (userDo == null) {
             return setResultError("根据openId查询该用户没有关注过");
         }

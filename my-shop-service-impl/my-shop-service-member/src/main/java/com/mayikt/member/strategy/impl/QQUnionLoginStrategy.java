@@ -2,8 +2,9 @@ package com.mayikt.member.strategy.impl;
 
 import com.mayikt.http.HttpClientUtils;
 import com.mayikt.member.entity.UnionLoginDo;
+import com.mayikt.member.entity.UserDo;
+import com.mayikt.member.mapper.UserMapper;
 import com.mayikt.member.strategy.UnionLoginStrategy;
-import com.mayikt.utils.TokenUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +26,7 @@ public class QQUnionLoginStrategy implements UnionLoginStrategy {
     @Value("${mayikt.login.qq.openid}")
     private String openidAddress;
     @Autowired
-    private TokenUtils tokenUtils;
+    UserMapper userMapper;
 
     @Override
     public String unionLoginCallback(HttpServletRequest request, UnionLoginDo unionLoginDo) {
@@ -63,9 +64,11 @@ public class QQUnionLoginStrategy implements UnionLoginStrategy {
                 .trim()
                 .split(":");
         String openid = array[2];
+        return openid;
+    }
 
-        // 3.将openid存入到redis中
-        String openidToken = tokenUtils.createToken("qq.openid", openid);
-        return openidToken;
+    @Override
+    public UserDo getUserDo(String openid) {
+        return userMapper.selectByQQOpenId(openid);
     }
 }

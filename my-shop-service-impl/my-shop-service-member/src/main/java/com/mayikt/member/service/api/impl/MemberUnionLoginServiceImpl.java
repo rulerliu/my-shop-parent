@@ -34,7 +34,6 @@ public class MemberUnionLoginServiceImpl extends BaseApiService implements Membe
     @Autowired
     private TokenUtils tokenUtils;
 
-
     @Override
     public BaseResponse<String> unionLogin(String unionPublicId) {
         if (StringUtils.isEmpty(unionPublicId)) {
@@ -67,11 +66,18 @@ public class MemberUnionLoginServiceImpl extends BaseApiService implements Membe
 
         UnionLoginStrategy unionLoginStrategy = SpringContextUtils.getBean(unionLoginDo.getUnionBeanId(), UnionLoginStrategy.class);
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        String openidToken = unionLoginStrategy.unionLoginCallback(request, unionLoginDo);
-        if (StringUtils.isEmpty(openidToken)) {
-            return setResultError("系统错误");
+        String openid = unionLoginStrategy.unionLoginCallback(request, unionLoginDo);
+        if (StringUtils.isEmpty(openid)) {
+            return setResultError("openid为空");
         }
 
+        // 3.将openid存入到redis中
+        JSONObject jo = new JSONObject();
+        jo.put("openid", openid);
+        jo.put("unionPublicId", unionPublicId);
+        String openidToken = tokenUtils.createToken("login.openid.", jo.toString());
+
+        // 4.返回数据
         JSONObject data = new JSONObject();
         data.put("openidToken", openidToken);
         return setResultSuccess(data);

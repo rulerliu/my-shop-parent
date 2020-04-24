@@ -86,9 +86,9 @@ public class MemberLoginServiceImpl extends BaseApiService implements MemberLogi
         System.out.println(">>>>>线程名称:" + Thread.currentThread().getName() + ",流程3");
 
         // 返回token
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("userToken", token);
-        return setResultSuccess(jsonObject);
+        JSONObject data = new JSONObject();
+        data.put("userToken", token);
+        return setResultSuccess(data);
     }
 
 }
