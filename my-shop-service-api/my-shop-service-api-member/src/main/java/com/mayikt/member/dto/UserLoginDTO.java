@@ -32,6 +32,12 @@ public class UserLoginDTO {
      */
     @ApiModelProperty(value = "密码", name = "passWord", required = true)
     private String passWord;
+
+    /**
+     * openidToken
+     */
+    @ApiModelProperty(value = "openidToken", name = "openidToken", required = true)
+    private String openidToken;
 //
 //    private String smsCode;
 

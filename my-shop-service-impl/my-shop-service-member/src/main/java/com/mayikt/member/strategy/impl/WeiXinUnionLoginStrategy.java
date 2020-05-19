@@ -59,4 +59,9 @@ public class WeiXinUnionLoginStrategy implements UnionLoginStrategy {
         return userMapper.selectByWxOpenId(openid);
     }
 
+    @Override
+    public int updateUserOpenId(Long userId, String tempOpenId) {
+        return userMapper.updateUserWxOpenId(userId, tempOpenId);
+    }
+
 }

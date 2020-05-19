@@ -1,11 +1,17 @@
 package com.mayikt.member.manage;
 
+import com.alibaba.fastjson.JSONObject;
+import com.mayikt.member.entity.UnionLoginDo;
 import com.mayikt.member.entity.UserLoginLogDo;
 import com.mayikt.member.feign.WeChatLoginTemplateServiceFeign;
+import com.mayikt.member.mapper.UnionLoginMapper;
 import com.mayikt.member.mapper.UserLoginLogMapper;
+import com.mayikt.member.strategy.UnionLoginStrategy;
+import com.mayikt.utils.SpringContextUtils;
 import com.mayikt.utils.TokenUtils;
 import com.mayikt.weixin.dto.LoginTemplateDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -28,12 +34,14 @@ public class AsyncLoginLogManage {
     private TokenUtils tokenUtils;
     @Autowired
     private WeChatLoginTemplateServiceFeign weChatLoginTemplateServiceFeign;
+    @Autowired
+    private UnionLoginMapper unionLoginMapper;
 
     @Async
-    public void loginLog(String phone, String openId, Long userId, String loginIp, Date loginTime, String loginToken, String channel,
+    public void loginLog(String openidToken, String phone, String openId, Long userId, String loginIp, Date loginTime, String loginToken, String channel,
                          String equipment) {
 
-        // 根据userid和channel查询登录log表
+        // 1 根据userid和channel查询登录log表
         UserLoginLogDo dbUserLoginLogDo = userLoginLogMapper.selectByUserIdAndLoginType(userId, channel);
 
         // 如果之前有登陆过,则将之前token的状态该为不可用，同时清除Redis
@@ -47,16 +55,36 @@ public class AsyncLoginLogManage {
             }
         }
 
-        // 插入当前记录日志
+        // 2 插入当前记录日志
         UserLoginLogDo userLoginLogDo = new UserLoginLogDo(userId, loginIp, loginTime, loginToken, channel, equipment);
         userLoginLogMapper.insertUserLoginLog(userLoginLogDo);
 
-        // 微信登录消息推送
+        // 3 微信登录消息推送
         LoginTemplateDTO loginTemplateDTO = new LoginTemplateDTO(phone, loginTime, loginIp, equipment, openId);
         weChatLoginTemplateServiceFeign.sendLoginTemplate(loginTemplateDTO);
 
         System.out.println(">>>>>线程名称:" + Thread.currentThread().getName() + ",userLoginLogDo:" + userLoginLogDo.toString() +
                 ",流程2");
+
+        // 4.关联我们的openid
+        if (!StringUtils.isEmpty(openidToken)) {
+            String openIdJson = tokenUtils.getTokenValue(openidToken);
+            JSONObject jsonObject = JSONObject.parseObject(openIdJson);
+            String unionPublicId = jsonObject.getString("unionPublicId");
+            // 3.根据该渠道id查询bean的id ，从容器中获取
+            UnionLoginDo unionLoginDo = unionLoginMapper.selectByUnionLoginId(unionPublicId);
+            if (unionLoginDo == null) {
+                return ;
+            }
+            String unionBeanId = unionLoginDo.getUnionBeanId();
+            UnionLoginStrategy unionLoginStrategy = SpringContextUtils.
+                    getBean(unionBeanId, UnionLoginStrategy.class);
+            if (unionLoginStrategy == null) {
+                return ;
+            }
+            String tempOpenId = jsonObject.getString("openId");
+            unionLoginStrategy.updateUserOpenId(userId,tempOpenId);
+        }
 
     }
 }

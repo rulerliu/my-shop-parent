@@ -17,6 +17,10 @@ public class UnionLoginDo {
      */
     String unionName;
     /**
+     * 图片地址
+     */
+    String unionImgLog;
+    /**
      * appId
      */
     String appId;

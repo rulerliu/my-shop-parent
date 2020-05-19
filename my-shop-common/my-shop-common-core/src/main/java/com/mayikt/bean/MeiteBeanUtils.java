@@ -2,6 +2,9 @@ package com.mayikt.bean;
 
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 
  * 
@@ -56,6 +59,32 @@ public class MeiteBeanUtils<Dto, Do> {
 			BeanUtils.copyProperties(doEntity, newInstance);
 			// Dto转换Do
 			return newInstance;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * do 转换为Dto 工具类
+	 */
+	public static <Dto> List<Dto> doToDtoList(List<?> doEntity, Class<Dto> dtoClass) {
+		// 判断dto是否为空!
+		if (doEntity == null) {
+			return null;
+		}
+		// 判断DoClass 是否为空
+		if (dtoClass == null) {
+			return null;
+		}
+		try {
+			List<Dto> objects = new ArrayList<>();
+			for (Object object : doEntity) {
+				Dto newInstance = dtoClass.newInstance();
+				BeanUtils.copyProperties(object, newInstance);
+				objects.add(newInstance);
+			}
+			// Dto转换Do
+			return objects;
 		} catch (Exception e) {
 			return null;
 		}

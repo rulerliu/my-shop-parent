@@ -3,6 +3,8 @@ package com.mayikt.member.service.api.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.mayikt.base.BaseApiService;
 import com.mayikt.base.BaseResponse;
+import com.mayikt.bean.MeiteBeanUtils;
+import com.mayikt.member.dto.UnionLoginDTO;
 import com.mayikt.member.entity.UnionLoginDo;
 import com.mayikt.member.mapper.UnionLoginMapper;
 import com.mayikt.member.service.api.MemberUnionLoginService;
@@ -17,6 +19,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @description:
@@ -81,6 +84,16 @@ public class MemberUnionLoginServiceImpl extends BaseApiService implements Membe
         JSONObject data = new JSONObject();
         data.put("openidToken", openidToken);
         return setResultSuccess(data);
+    }
+
+    @Override
+    public BaseResponse<List<UnionLoginDTO>> unionLoginList() {
+        List<UnionLoginDo> unionLoginList = unionLoginMapper.selectByUnionLoginList();
+        if (unionLoginList == null) {
+            return setResultError("当前没有可用渠道");
+        }
+        List<UnionLoginDTO> unionLoginDtos = MeiteBeanUtils.doToDtoList(unionLoginList, UnionLoginDTO.class);
+        return setResultSuccess(unionLoginDtos);
     }
 
 }

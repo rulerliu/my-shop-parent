@@ -57,7 +57,7 @@ public class MemberOpenidTokenLoginServiceImpl extends BaseApiService implements
         if (unionLoginDo == null) {
             return setResultError("该渠道不存在或已关闭");
         }
-
+        
         UnionLoginStrategy unionLoginStrategy = SpringContextUtils.getBean(unionLoginDo.getUnionBeanId(), UnionLoginStrategy.class);
         UserDo userDo = unionLoginStrategy.getUserDo(openid);
         if (userDo == null) {

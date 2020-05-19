@@ -34,6 +34,7 @@ DROP TABLE IF EXISTS `meite_union_login`;
 CREATE TABLE `meite_union_login` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `union_name` varchar(255) DEFAULT NULL,
+  `union_img_log` varchar(255) DEFAULT NULL,
   `union_public_id` varchar(255) DEFAULT NULL,
   `union_bean_id` varchar(255) DEFAULT NULL,
   `app_id` varchar(255) DEFAULT NULL,

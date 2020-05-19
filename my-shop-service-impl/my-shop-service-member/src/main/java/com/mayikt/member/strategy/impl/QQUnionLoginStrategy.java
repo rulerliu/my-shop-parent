@@ -71,4 +71,9 @@ public class QQUnionLoginStrategy implements UnionLoginStrategy {
     public UserDo getUserDo(String openid) {
         return userMapper.selectByQQOpenId(openid);
     }
+
+    @Override
+    public int updateUserOpenId(Long userId, String tempOpenId) {
+        return userMapper.updateUserQQOpenId(userId, tempOpenId);
+    }
 }

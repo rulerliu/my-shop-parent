@@ -50,3 +50,10 @@ https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=wx1cfc856828f3c25b&gran
 
 4：根据access_token和openid获取用户信息
 https://api.weixin.qq.com/sns/userinfo?access_token=32_fTHLIUQpuRPUT4f2aVUQKcv_l4CXLe3DZ2a1vgojKT3qmISZtF-SA9e_sxV-v87IecelYTZjTEJKBoxGl3U9ag&openid=orNsKwYbXpn5brp3qQ_ABzInYsL4&lang=zh_CN
+
+关联页面需要传递token令牌：
+1.先根据令牌查询openid有关联过账户，如果关联过账户的话，直接使用openid实现自动登录，返回用户的token给客户端，vue直接跳转到首页
+
+1.接口需要查询联合登陆渠道
+2.登录接口改造加上判断，如果有openidToken，应该关联到数据库中
+3.openidToken判断是否已经关联过账号，如果关联过直接跳转到首页，没有关联跳转到关联页面

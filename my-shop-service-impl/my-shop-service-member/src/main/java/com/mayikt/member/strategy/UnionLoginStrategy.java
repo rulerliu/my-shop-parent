@@ -10,4 +10,6 @@ public interface UnionLoginStrategy {
     String unionLoginCallback(HttpServletRequest request, UnionLoginDo unionLoginDo);
 
     UserDo getUserDo(String openid);
+
+    int updateUserOpenId(Long userId,String tempOpenId);
 }
